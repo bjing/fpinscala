@@ -20,7 +20,7 @@ object List { // `List` companion object. Contains functions for creating and wo
   }
 
   def apply[A](as: A*): List[A] = // Variadic function syntax
-    if (as.isEmpty) Nil
+  if (as.isEmpty) Nil
     else Cons(as.head, apply(as.tail: _*))
 
   val x = List(1,2,3,4,5) match {
@@ -76,11 +76,32 @@ object List { // `List` companion object. Contains functions for creating and wo
       case _ => l
     }
 
-  def init[A](l: List[A]): List[A] = sys.error("todo")
+  def init[A](l: List[A]): List[A] = l match {
+    case Nil => sys.error("You are not supposed to reach here")
+    case Cons(_, Nil) => Nil
+    case Cons(x,xs) => Cons(x, init(xs))
+  }
 
-  def length[A](l: List[A]): Int = sys.error("todo")
+  def length[A](l: List[A]): Int =
+    foldRight(l, 0)((_, acc) => acc + 1)
 
-  def foldLeft[A,B](l: List[A], z: B)(f: (B, A) => B): B = sys.error("todo")
+
+  def foldLeft[A,B](l: List[A], z: B)(f: (B, A) => B): B = l match {
+    case Nil => z
+    case Cons(h,t) => foldLeft(t, f(z,h))(f)
+  }
+
+  def sumFoldLeft(ns: List[Int]) =
+    foldLeft(ns, 0)(_+_)
+
+  def productFoldLeft(ns: List[Int]) =
+    foldLeft(ns, 1)(_*_)
+
+  def lengthFoldLeft(ns: List[Int]) =
+    foldLeft(ns, 0)((_, y) => y + 1)
+
+  def reverse[A](l: List[A]): List[A] =
+    foldLeft(l, List[A]())((acc, h) => Cons(h, acc))
 
   def map[A,B](l: List[A])(f: A => B): List[B] = sys.error("todo")
 }
