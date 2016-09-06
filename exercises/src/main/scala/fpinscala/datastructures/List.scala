@@ -72,19 +72,23 @@ object List { // `List` companion object. Contains functions for creating and wo
 
   def dropWhile[A](l: List[A], f: A => Boolean): List[A] =
     l match {
+      case Nil => l
       case Cons(h,t) if f(h) => dropWhile(t, f)
-      case _ => l
     }
 
-  def init[A](l: List[A]): List[A] = l match {
-    case Nil => sys.error("You are not supposed to reach here")
-    case Cons(_, Nil) => Nil
-    case Cons(x,xs) => Cons(x, init(xs))
+  def init[A](l: List[A]): List[A] = {
+    @annotation.tailrec
+    def go(rest: List[A], acc: List[A]): List[A] = rest match {
+      case Nil => sys.error("You are not supposed to reach here")
+      case Cons(t, Nil) => acc
+      case Cons(h, t) => go(t, Cons(h, acc))
+    }
+
+    go(l, Nil)
   }
 
   def length[A](l: List[A]): Int =
     foldRight(l, 0)((_, acc) => acc + 1)
-
 
   def foldLeft[A,B](l: List[A], z: B)(f: (B, A) => B): B = l match {
     case Nil => z
