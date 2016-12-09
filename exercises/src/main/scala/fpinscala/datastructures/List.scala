@@ -108,4 +108,5 @@ object List { // `List` companion object. Contains functions for creating and wo
     foldLeft(l, List[A]())((acc, h) => Cons(h, acc))
 
   def map[A,B](l: List[A])(f: A => B): List[B] = sys.error("todo")
+
 }
