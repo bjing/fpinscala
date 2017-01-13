@@ -99,7 +99,6 @@ class OptionTest extends FunSpec {
       val result = Option.sequence(l)
 
       assert(result === Some(List(3,4,5)))
-
     }
 
     it("should return None if the list contains None") {
@@ -108,7 +107,6 @@ class OptionTest extends FunSpec {
 
       assert(result === None)
     }
-
   }
 
   describe("traverse") {
@@ -117,6 +115,22 @@ class OptionTest extends FunSpec {
       val result = Option.traverse(l)(a => Some(a))
 
       assert(result === Some(List(3, 4, 5)))
+    }
+  }
+
+  describe("sequence_1") {
+    it("should sequence a list of non None values") {
+      val l = List(Some(3), Some(4), Some(5))
+      val result = Option.sequence_1(l)
+
+      assert(result === Some(List(3,4,5)))
+    }
+
+    it("should return None if the list contains None") {
+      val l = List(Some(5), None, Some(4))
+      val result = Option.sequence_1(l)
+
+      assert(result === None)
     }
   }
 }
