@@ -108,5 +108,15 @@ class OptionTest extends FunSpec {
 
       assert(result === None)
     }
+
+  }
+
+  describe("traverse") {
+    it("should traverse a list of Options") {
+      val l = List(3, 4, 5)
+      val result = Option.traverse(l)(a => Some(a))
+
+      assert(result === Some(List(3, 4, 5)))
+    }
   }
 }
